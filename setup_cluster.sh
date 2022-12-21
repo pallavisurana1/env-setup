@@ -2,16 +2,19 @@
 
 #-------------- Quick setup on linux clusters --------------#
 
-#--- Install anaconda and setup env
+#--- Install anaconda or miniconda and setup env
+ 
+link=https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+wget $link
 
-#--- link - ://www.anaconda.com/products/individual#linux
+#--- compare hash to hash listed next to installation script
+8a324adcc9eaf1c09e22a992bb6234d91a94146840ee6b11c114ecadafc68121  Miniconda3-latest-Linux-x86_64.sh
 
-wget <link>
-bash <Anaconda3-2020.07-Linux-x86_64>
+bash Miniconda3-latest-Linux-x86_64.sh
 
-#--- get into UHMC cluster clinwulf - jupyter lab session
-ssh -N -L localhost:<local-port>:localhost:<remote-port> <remote-user>@<remote-host>
-ssh -N -L 8999:localhost:8999 pallavis@github.edu
+#--- edit bashrc and then source it again
+nano ~/.bashrc
+source ~/.bashrc
 
 #--- make directories, etc
 mkdir dir_name
@@ -20,14 +23,18 @@ mkdir dir_name
 ssh node_name
 
 #--- activate conda
-source $HOME/anaconda3/bin/activate
+source $HOME/miniconda3/bin/activate
 
 #--- envs present
 conda init
 conda info --envs
 
 #--- create env
-conda create -n env_name python=3.7
+conda create -n env_name python=3.10
+
+#--- rename env
+conda create --name new_name --clone old_name
+conda remove --name old_name --all # or its alias: `conda env remove --name old_name`
 
 #--- install jupyter lab
 conda install -c conda-forge jupyterlab
